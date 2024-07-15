@@ -1,0 +1,75 @@
+class InventoryItem:
+    """Represents a single item in the inventory."""
+
+    def __init__(self, name, quantity, price):
+        self.name = name
+        self.quantity = quantity
+        self.price = price
+
+    def __str__(self):
+        return f"{self.name} (Quantity: {self.quantity}, Price: {self.price})"
+
+class InventoryManager:
+    """Manages the inventory of items."""
+
+    def __init__(self):
+        self.inventory = {}  # Dictionary to store items: {name: InventoryItem}
+
+    def add_item(self, name, quantity, price):
+        """Adds a new item to the inventory or updates its quantity if it exists."""
+        if name in self.inventory:
+            self.inventory[name].quantity += quantity
+        else:
+            self.inventory[name] = InventoryItem(name, quantity, price)
+        print(f"Item '{name}' added/updated.")
+
+    def remove_item(self, name, quantity=None):
+        """Removes an item from the inventory."""
+        if name in self.inventory:
+            if quantity is None:
+                del self.inventory[name]
+                print(f"Item '{name}' removed.")
+            elif quantity <= self.inventory[name].quantity:
+                self.inventory[name].quantity -= quantity
+                print(f"{quantity} of '{name}' removed.")
+            else:
+                print(f"Not enough '{name}' in stock.")
+        else:
+            print(f"Item '{name}' not found.")
+
+    def view_inventory(self):
+        """Displays the current inventory."""
+        if self.inventory:
+            print("Current Inventory:")
+            for item in self.inventory.values():
+                print(item)
+        else:
+            print("Inventory is empty.")
+
+    def search_item(self, name):
+        """Searches for an item by name."""
+        if name in self.inventory:
+            print(self.inventory[name])
+        else:
+            print(f"Item '{name}' not found.")
+
+# Example usage:
+inventory = InventoryManager()
+
+# Add items
+inventory.add_item("Apple", 10, 1.00)
+inventory.add_item("Banana", 20, 0.50)
+inventory.add_item("Orange", 5, 0.75)
+
+# View inventory
+inventory.view_inventory()
+
+# Remove some items
+inventory.remove_item("Banana", 5)
+inventory.remove_item("Orange")
+
+# View inventory again
+inventory.view_inventory()
+
+# Search for an item
+inventory.search_item("Apple")
