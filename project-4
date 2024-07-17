@@ -1,0 +1,35 @@
+# Import necessary libraries
+import requests
+
+# Function to fetch COVID-19 statistics based on region
+def fetch_covid_statistics(region):
+    url = f"https://disease.sh/v3/covid-19/countries/{region}"  # Example API endpoint
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        # Extract relevant data
+        cases = data.get('cases', 'N/A')
+        recoveries = data.get('recovered', 'N/A')
+        deaths = data.get('deaths', 'N/A')
+        return cases, recoveries, deaths
+    else:
+        return None, None, None
+
+# Function to display COVID-19 statistics
+def display_statistics(region, cases, recoveries, deaths):
+    print(f"COVID-19 Statistics for {region}:")
+    print(f"Cases: {cases}")
+    print(f"Recoveries: {recoveries}")
+    print(f"Deaths: {deaths}")
+
+# Main function to run the application
+def main():
+    region = input("Enter a country, state, or city: ").strip()
+    cases, recoveries, deaths = fetch_covid_statistics(region)
+    if cases is not None:
+        display_statistics(region, cases, recoveries, deaths)
+    else:
+        print(f"Failed to fetch COVID-19 statistics for {region}. Please check the input.")
+
+if _name_ == "_main_":
+    main()
